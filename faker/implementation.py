@@ -29,14 +29,14 @@ def modify_message(cursor, message_id):
     global dispatch_list
     #This method is invoked when user tries to modify a message
     #In dispatch_list we have the messages that are being dispatched at the moment.
-    #We have some logic to check if the message that the user is wanting to update is not already in the ditpatch list
+    #We have some logic to check if the message that the user is wanting to update is not already in the dispatch list
     #If it is, we do not allow the modificiation and otherwise update the message in the queue
     #This is happening concurrently on multiple processes to cater for the constraint
 
     if message_id in dispatch_list:
         print('message is being dispatched... we cannot modify it at the moment.') 
     else:
-        cursor.execute("UPDATE messages SET content = 'MODIYING THE MESSAGE TO THIS' where id= %s", (message_id, )) 
+        cursor.execute("UPDATE messages SET content = 'MODIfYING THE MESSAGE TO THIS' where id= %s", (message_id, )) 
 
 
 #Printing the results in aa data frame (pandas) and returning the data frame
@@ -72,7 +72,7 @@ def modify_queue(send_queue):
     dispatch_list= send_queue
 
 
-#Initialise a connection for the dataabase.
+#Initialise a connection for the database.
 conn = psycopg2.connect(
     host="localhost",
     port="5433",
@@ -87,7 +87,7 @@ if __name__ =='__main__':
     run_forever=True 
     while run_forever:
         cursor = conn.cursor()
-        # The important task is to sort the messages basaed ob the scheduled date time stamp.
+        # The important task is to sort the messages based on the scheduled date time stamp.
         # The lines below do this sorting.
         # We will continue to select messages which are not yet delivered and fetch this data
         cursor.execute("SELECT * FROM messages ORDER BY scheduled_date")
@@ -106,7 +106,7 @@ if __name__ =='__main__':
         with Pool() as pool:
             result=pool.map(dispatch_message, send_queue)
         
-        #If we get a random floaat > 0.5, we will try to modify a message and validate that it does not allow modification of a message in a dispatch queue
+        #If we get a random float > 0.5, we will try to modify a message and validate that it does not allow modification of a message in a dispatch queue
         #Else we check that we can generate a new row of data to the queue and yet it is sorted and scheduled and processes in the correct order and adding a new line does not make a difference to this.
         random_check = random.random()
         if random_check > 0.5:
