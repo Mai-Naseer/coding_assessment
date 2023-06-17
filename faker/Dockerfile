@@ -9,3 +9,8 @@ RUN pip install psycopg2-binary
 COPY faker_data_generator.py .
 
 CMD ["python", "-u", "faker_data_generator.py"]
+
+
+
+
+

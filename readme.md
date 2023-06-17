@@ -18,9 +18,11 @@ status: String
 delivered_date: DateTime
 ```
 # Constraints:
-- Each message can have a varying number of recipients.
-- The algorithm should handle concurrent modifications of the queue by multiple clients, ensuring fair dispatch to the given recipients.
-- No message should be modified while on dispatch.
+1- Each message can have a varying number of recipients.
+2- The algorithm should handle concurrent modifications of the queue by multiple clients, ensuring fair dispatch to the given recipients.
+3- No message should be modified while on dispatch.
+
+
 - Focus on how to process the queue and ignore how the message is actually delivered.
 - You can use any programming language to solve this problem. Good luck with your implementation!
 
@@ -30,3 +32,17 @@ run to initialize database and seed data
 ```docker-compose -f docker-compose.yml -f faker/faker-compose.yml up```  
 consecutive runs should only run the database  
 ```docker-compose up```  
+
+# Implementation reflections
+- My implementation allows users to efficiently process the data in the message table considering the scheduled date.
+- It takes into account the changes from multiple clients simultaneously
+- It does not allow a user to make modifications to a message being dispatched.
+- I run a dummy version of faker_data_generator.py called fake/test.py to create a smaller set of data. (Included in this repo)
+- I then run fake/implementation.py to process message delivery.
+- Please note that the concurrent processes were set to a minimum for the smaller subset and I have taken into account the scaling for the original data size.
+
+# Limitations
+
+- Can one recipient receive the same message? Given the database schema, only one unique recipient exists in the table.
+
+

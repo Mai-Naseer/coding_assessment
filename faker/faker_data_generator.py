@@ -36,9 +36,12 @@ print("Fetched {} messages".format(len(message_ids)))
 
 print("Inserting message recipients")
 # Generate and insert faker data into the recipients table
+print("Debugging statement")
 for message_id in message_ids:
+
     num_recipients = random.randint(1, 1000)  # Generate a random number of recipients for each message
     recipients = []
+
     for _ in range(num_recipients):
         email_address = fake.email()
         recipients.append([message_id, email_address])
